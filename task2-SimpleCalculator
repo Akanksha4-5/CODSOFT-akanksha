@@ -1,134 +1,115 @@
 #include <iostream>
 using namespace std;
 
-char board[3][3];
-char currentPlayer = 'X'; 
+//class Calculator defination 
+class Calculator {
+private:
+    double num1, num2;
 
-// Initializing the game board with 1-9
-void initializeBoard() {
-    char num = '1';
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            board[i][j] = num++;
-}
-
-// Display 
-void displayBoard() {
-    cout << "\n";
-    for (int i = 0; i < 3; i++) {
-        cout << " ";
-        for (int j = 0; j < 3; j++) {
-            cout << board[i][j];
-            if (j < 2) cout << " | ";
-        }
-        if (i < 2) cout << "\n-----------\n";
-    }
-    cout << "\n\n";
-}
-
-
-bool playerMove() {
-    int pos;
-    cout << "Player " << currentPlayer << ", enter your move (1-9): ";
-    cin >> pos;
-
-    if (cin.fail() || pos < 1 || pos > 9) {
-        cin.clear();
-        cin.ignore(10000, '\n');
-        cout << "Invalid input. Try again.\n";
-        return false;
+public:
+    //  input function
+    void getInput() {
+        cout << "Enter first number: ";
+        cin >> num1;
+        cout << "Enter second number: ";
+        cin >> num2;
     }
 
-    int row = (pos - 1) / 3;
-    int col = (pos - 1) % 3;
-
-    if (board[row][col] == 'X' || board[row][col] == 'O') {
-        cout << "Cell already taken. Choose another.\n";
-        return false;
+    // Addition
+    void add() {
+        cout << "Result: " << (num1 + num2) << endl;
     }
 
-   
-    board[row][col] = currentPlayer;
-    return true;
-}
-
-
-bool checkWin() {
-    for (int i = 0; i < 3; i++) {
-        if (board[i][0] == currentPlayer &&
-            board[i][1] == currentPlayer &&
-            board[i][2] == currentPlayer)
-            return true;
-
-        if (board[0][i] == currentPlayer &&
-            board[1][i] == currentPlayer &&
-            board[2][i] == currentPlayer)
-            return true;
+    // Subtraction
+    void subtract() {
+        cout << "Result: " << (num1 - num2) << endl;
     }
 
-    if (board[0][0] == currentPlayer &&
-        board[1][1] == currentPlayer &&
-        board[2][2] == currentPlayer)
-        return true;
-
-    if (board[0][2] == currentPlayer &&
-        board[1][1] == currentPlayer &&
-        board[2][0] == currentPlayer)
-        return true;
-
-    return false;
-}
-
-// Check for (no empty cells)
-bool checkDraw() {
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            if (board[i][j] != 'X' && board[i][j] != 'O')
-                return false;
-    return true;
-}
-
-// Switch the  players
-void switchPlayer() {
-    currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
-}
-
-//  Main game loop
-void playGame() {
-    initializeBoard();
-    currentPlayer = 'X';
-    bool gameRunning = true;
-
-    while (gameRunning) {
-        displayBoard();
-
-        if (!playerMove()) continue;
-
-        if (checkWin()) {
-            displayBoard();
-            cout << " Player " << currentPlayer << " wins the game!\n";
-            gameRunning = false;
-        } else if (checkDraw()) {
-            displayBoard();
-            cout << " it is  a draw!\n";
-            gameRunning = false;
-        } else {
-            switchPlayer();
-        }
+    // Division
+    void divide() {
+        if (num2 != 0)
+            cout << "Result: " << (num1 / num2) << endl;
+        else
+            cout << "Error: Division by zero is not allowed." << endl;
     }
-}
+};
 
+// Main function with menu
 int main() {
-    char playAgain;
-    do {
-        playGame();
-        cout << "Do you want to play again? (y/n): ";
-        cin >> playAgain;
-    } while (playAgain == 'y' || playAgain == 'Y');
+    Calculator obj;
+    int choice;
 
-    cout << "Thanks for playing!\n";
+    do {
+        cout << "\n Calculator Menu\n";
+        cout << "1. Add (+)\n";
+        cout << "2. Subtract (-)\n";
+        cout << "3. Divide (/)\n";
+        cout << "4. Exit\n";
+        cout << "Choose an operation (1-4): ";
+        cin >> choice;
+
+        if (choice >= 1 && choice <= 3) {
+            obj.getInput(); // Get numbers before performing operation
+        }
+        switch (choice) {
+            case 1:
+                obj.add();
+                break;
+            case 2:
+                obj.subtract();
+                break;
+            case 3:
+                obj.divide();
+                break;
+            case 4:
+                cout << "Exiting!\n";
+                break;
+            default:
+                cout << "Invalid choice. Please enter 1-4.\n";
+        }
+
+    } while (choice != 4);
+
     return 0;
 }
 
+//output:
+Calculator Menu
+1. Add (+)
+2. Subtract (-)
+3. Divide (/)
+4. Exit
+Choose an operation (1-4): 1
+Enter first number: 23
+Enter second number: 45
+Result: 68
 
+ Calculator Menu
+1. Add (+)
+2. Subtract (-)
+3. Divide (/)
+4. Exit
+Choose an operation (1-4): 2
+Enter first number: 56
+Enter second number: 43
+Result: 13
+
+ Calculator Menu
+1. Add (+)
+2. Subtract (-)
+3. Divide (/)
+4. Exit
+Choose an operation (1-4): 3
+Enter first number: 45
+Enter second number: ERROR!
+0
+Error: Division by zero is not allowed.
+
+ Calculator Menu
+1. Add (+)Add commentMore actions
+2. Subtract (-)
+3. Divide (/)
+4. Exit
+Choose an operation (1-4): 4
+Exiting!
 
